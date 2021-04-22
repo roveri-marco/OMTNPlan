@@ -27,21 +27,24 @@ class Search():
     Base class defining search schemes.
     """
 
-    def __init__(self, encoder,ub):
+    def __init__(self, encoder, ub, prefix="dump_"):
         self.encoder = encoder
         self.found = False
         self.solution = None
         self.solver = None
         self.ub = ub
+        self.prefix = prefix
 
-
+    def set_prefix(self, name):
+        self.prefix = name
+        pass
 
 class SearchSMT(Search):
     """
     Search class for SMT-based encodings.
     """
 
-    def do_linear_search(self):
+    def do_linear_search(self, dump=False):
         """
         Linear search scheme for SMT encodings with unit action costs.
 
@@ -57,6 +60,8 @@ class SearchSMT(Search):
         # Build formula until a plan is found or upper bound is reached
 
         while not self.found and self.horizon < self.ub:
+            res = unknown
+
             # Create SMT solver instance
             self.solver = Solver()
 
@@ -67,8 +72,14 @@ class SearchSMT(Search):
             for k,v in formula.items():
                 self.solver.add(v)
 
-            # Check for satisfiability
-            res = self.solver.check()
+            if dump == True:
+                filename = self.prefix + "_" + str(self.horizon) + ".smt2"
+                print('Dumping SMT file {}'.format(filename))
+                with open(filename, mode='w') as f:
+                    f.write(self.solver.to_smt2())
+            else:
+                # Check for satisfiability
+                res = self.solver.check()
 
             if res == sat:
                 self.found = True
@@ -76,9 +87,10 @@ class SearchSMT(Search):
                 # Increment horizon until we find a solution
                 self.horizon = self.horizon + 1
 
-        # Extract plan from model
-        model = self.solver.model()
-        self.solution = plan.Plan(model, self.encoder)
+        if self.found:
+            # Extract plan from model
+            model = self.solver.model()
+            self.solution = plan.Plan(model, self.encoder)
 
         return self.solution
 
@@ -106,7 +118,7 @@ class SearchOMT(Search):
         return schedule
 
 
-    def do_search(self):
+    def do_search(self, dump=False):
         """
         Search scheme for OMT encodings with unit, constant or state-dependent action costs.
         """
@@ -120,6 +132,7 @@ class SearchOMT(Search):
         # Start building formulae
 
         for horizon in horizon_schedule:
+            res = unknown
             print('Try horizon {}'.format(horizon))
 
             # Create OMT solver instance
@@ -142,26 +155,35 @@ class SearchOMT(Search):
                 else:
                     self.solver.add(sub_formula)
 
-            print('Checking formula')
-
-            res = self.solver.check()
-
-            # If formula is unsat, the problem does not admit solution
-            # see Theorem 1 in related paper
-
-            if res == unsat:
-                print('Problem not solvable')
-
+            if dump == True:
+                filename = self.prefix + "_" + str(horizon)  + ".smt2"
+                print('Dumping OMT file {}'.format(filename))
+                with open(filename, mode='w') as f:
+                    f.write("; benchmark generated from python API")
+                    f.write("(set-info :status unknown)")
+                    sexpr = self.solver.sexpr()
+                    f.write(sexpr)
             else:
-                # Check if model satisfied concrete goal
-                model = self.solver.model()
-                opt = model.eval(formula['real_goal'])
+                print('Checking formula')
 
-                # if formula is sat and G_n is satisfied, solution is optimal
-                # see Theorem 2 in related paper
+                res = self.solver.check()
 
-                if opt:
-                    self.solution =  plan.Plan(model, self.encoder, objective)
-                    break
+                # If formula is unsat, the problem does not admit solution
+                # see Theorem 1 in related paper
+
+                if res == unsat:
+                    print('Problem not solvable')
+
+                else:
+                    # Check if model satisfied concrete goal
+                    model = self.solver.model()
+                    opt = model.eval(formula['real_goal'])
+
+                    # if formula is sat and G_n is satisfied, solution is optimal
+                    # see Theorem 2 in related paper
+
+                    if opt:
+                        self.solution =  plan.Plan(model, self.encoder, objective)
+                        break
 
         return self.solution

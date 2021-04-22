@@ -65,6 +65,7 @@ def parse_args():
     parser.add_argument('-smt', action='store_true', help='Enables SMT encoding.')
 
     parser.add_argument('-b', type=int, default=bound, help='Upper bound for OMTPlan search.')
+    parser.add_argument('-dump', action='store_true', help='Enables dump of the generated formulas')
 
 
     args = parser.parse_args()

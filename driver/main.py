@@ -29,7 +29,7 @@ from planner import search
 
 val_path = '/bin/validate'
 
-    
+
 def main(BASE_DIR):
     """
     Main planning routine
@@ -48,11 +48,17 @@ def main(BASE_DIR):
         task = translate.pddl.open(prb)
         domain = utils.getDomainName(prb)
 
+    prefix = task.domain_name + "__" + task.task_name
 
     # Fetch upper bound for bounded search
-    
+
     ub = args.b
-    
+
+    if args.dump:
+        dump=True
+    else:
+        dump=False
+
     # Compose encoder and search
     # according to user flags
 
@@ -72,8 +78,8 @@ def main(BASE_DIR):
             else:
 
                 # Ramp-up search for optimal planning with unit costs
-                s = search.SearchSMT(e,ub)
-                plan = s.do_linear_search()
+                s = search.SearchSMT(e, ub, prefix)
+                plan = s.do_linear_search(dump=dump)
 
         elif args.parallel:
             print('\nWarning: optimal planning not supported for this configuration')
@@ -90,8 +96,8 @@ def main(BASE_DIR):
                 # Print SMT planning formula (parallel) to file
                 utils.printSMTFormula(formula,task.task_name)
             else:
-                s = search.SearchSMT(e,ub)
-                plan = s.do_linear_search()
+                s = search.SearchSMT(e, ub, prefix)
+                plan = s.do_linear_search(dump=dump)
 
         else:
             print('No execution semantics specified, choose between linear or parallel.')
@@ -106,32 +112,32 @@ def main(BASE_DIR):
 
             # Build SMT-LIB encoding and dump (no solving)
             if args.translate:
-                
+
                 formula = e.encode(args.translate)
 
                 # Print OMT planning formula (linear) to file
 
                 utils.printOMTFormula(formula,task.task_name)
-                
+
             else:
-                s = search.SearchOMT(e,ub)
-                plan = s.do_search()
+                s = search.SearchOMT(e, ub, prefix)
+                plan = s.do_search(dump=dump)
 
         elif args.parallel:
             e = encoder.EncoderOMT(task, modifier.ParallelModifier())
 
             # Build SMT-LIB encoding and dump (no solving)
             if args.translate:
-                
+
                 formula = e.encode(args.translate)
 
                 # Print OMT planning formula (parallel) to file
 
                 utils.printOMTFormula(formula,task.task_name)
-                
+
             else:
-                s = search.SearchOMT(e,ub)
-                plan = s.do_search()
+                s = search.SearchOMT(e, ub, prefix)
+                plan = s.do_search(dump=dump)
 
 
         else:
@@ -139,7 +145,7 @@ def main(BASE_DIR):
             print('Exiting now...')
             sys.exit()
 
-        
+
     else:
         print('No solving technique specified, choose between SMT or OMT.')
         print('Exiting now...')
@@ -151,7 +157,7 @@ def main(BASE_DIR):
 
     val = BASE_DIR+val_path
 
-    if not args.translate:
+    if (not (args.translate or args.dump)) :
 
         try:
             if plan.validate(val, domain, prb):
@@ -177,6 +183,6 @@ def main(BASE_DIR):
             else:
                 plan.pprint(BASE_DIR)
 
- 
+
 if __name__ == '__main__':
     main()
