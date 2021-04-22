@@ -77,6 +77,7 @@ class SearchSMT(Search):
                 print('Dumping SMT file {}'.format(filename))
                 with open(filename, mode='w') as f:
                     f.write(self.solver.to_smt2())
+                    f.write("(exit)")
             else:
                 # Check for satisfiability
                 res = self.solver.check()
@@ -163,6 +164,8 @@ class SearchOMT(Search):
                     f.write("(set-info :status unknown)")
                     sexpr = self.solver.sexpr()
                     f.write(sexpr)
+                    f.write("(exit)")
+
             else:
                 print('Checking formula')
 
