@@ -27,7 +27,11 @@ class Action(object):
             parameters = []
             precondition_tag_opt = parameters_tag_opt
         if precondition_tag_opt == ":precondition":
-            precondition = conditions.parse_condition(iterator.next())
+            p = iterator.next()
+            if len(p) > 0:
+                precondition = conditions.parse_condition(p)
+            else:
+                precondition = conditions.Conjunction([])
             effect_tag = iterator.next()
         else:
             precondition = conditions.Conjunction([])
@@ -86,15 +90,15 @@ class Action(object):
 
         precondition = []
         try:
-            self.condition.instantiate(var_mapping, init_facts, fluent_facts, 
+            self.condition.instantiate(var_mapping, init_facts, fluent_facts,
                                        init_function_vals, fluent_functions, task,
                                        new_axiom, precondition)
         except conditions.Impossible:
             return None
         effects = []
         for eff in self.effects:
-            eff.instantiate(var_mapping, init_facts, fluent_facts, 
-                            init_function_vals, fluent_functions, task, 
+            eff.instantiate(var_mapping, init_facts, fluent_facts,
+                            init_function_vals, fluent_functions, task,
                             new_axiom, objects_by_type, effects)
         if effects:
             return PropositionalAction(name, precondition, effects)
@@ -161,8 +165,8 @@ class DurativeAction(object):
     parse = staticmethod(parse)
     def dump(self):
         if self.orig_parameter_length != len(self.parameters):
-            print "%s(%s, (%s))" % (self.name, 
-                              ", ".join(map(str, self.parameters[0:self.orig_parameter_length])), 
+            print "%s(%s, (%s))" % (self.name,
+                              ", ".join(map(str, self.parameters[0:self.orig_parameter_length])),
                               ", ".join(map(str, self.parameters[self.orig_parameter_length:])))
         else:
             print "%s(%s)" % (self.name, ", ".join(map(str, self.parameters)))
@@ -211,21 +215,21 @@ class DurativeAction(object):
         name = "(%s %s)" % (self.name, " ".join(arg_list[:self.orig_parameter_length]))
 
         try:
-            inst_duration = [[(op,pne.instantiate(var_mapping, fluent_functions, 
-                                              init_function_vals, task, new_axiom)) 
+            inst_duration = [[(op,pne.instantiate(var_mapping, fluent_functions,
+                                              init_function_vals, task, new_axiom))
                                               for op,pne in self.duration[0]],
-                            [(op,pne.instantiate(var_mapping, fluent_functions, 
-                                              init_function_vals, task, new_axiom)) 
+                            [(op,pne.instantiate(var_mapping, fluent_functions,
+                                              init_function_vals, task, new_axiom))
                                               for op,pne in self.duration[1]]]
         except ValueError, e:
             print "dropped action %s" % name
             print "Error: %s" % e
             return None
-        
+
         inst_conditions = [[],[],[]]
         for time,condition in enumerate(self.condition):
             try:
-                condition.instantiate(var_mapping, init_facts, fluent_facts, 
+                condition.instantiate(var_mapping, init_facts, fluent_facts,
                                       init_function_vals, fluent_functions, task,
                                       new_axiom, inst_conditions[time])
             except conditions.Impossible:
@@ -233,8 +237,8 @@ class DurativeAction(object):
         effects = [[],[]]
         for time,timed_effects in enumerate(self.effects):
             for eff in timed_effects:
-                eff.instantiate(var_mapping, init_facts, fluent_facts, 
-                                init_function_vals, fluent_functions, task, 
+                eff.instantiate(var_mapping, init_facts, fluent_facts,
+                                init_function_vals, fluent_functions, task,
                                 new_axiom, objects_by_type, effects[time])
         if effects:
             return PropositionalDurativeAction(name, inst_duration, inst_conditions, effects)
