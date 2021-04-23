@@ -8,15 +8,15 @@
 
   (:predicates
    (connected ?p1 ?p2 - point)
-   (route_assigned ?c -convoy ?p1 ?p2 -point)
-   (position ?c -convoy ?p1)
+   (route_assigned ?c - convoy ?p1 ?p2 - point)
+   (position ?c - convoy ?p1)
    )
 
   (:functions
    (distance ?p1 ?p2 - point )
    (traffic ?p1 ?p2 - point )
    (speed ?c - convoy )
-   (distance_to ?c -convoy ?p - point)
+   (distance_to ?c - convoy ?p - point)
    (elapsed_time)
    (t)
    )
@@ -35,7 +35,7 @@
 	   )
 
   (:action park
-	   :parameters (?c - convoy ?p1 ?p2 -point)
+	   :parameters (?c - convoy ?p1 ?p2 - point)
 	   :precondition (and
 			  (<= (distance_to ?c ?p2) 0)
 			  (route_assigned ?c ?p1 ?p2)

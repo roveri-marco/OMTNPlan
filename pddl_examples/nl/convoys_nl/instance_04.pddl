@@ -28,9 +28,9 @@
    (= (distance loc_D loc_B) 20.0) (= (distance loc_B loc_D) 20.0)
    (= (traffic loc_D loc_B) 0.0) (= (traffic loc_B loc_D) 0.0)
 
-   (connected loc_A loc_B) (connected loc_A loc_D)
-   (= (distance loc_D loc_A) 10.0) (= (distance loc_A loc_D) 10.0)
-   (= (traffic loc_D loc_A) 0.0) (= (traffic loc_A loc_D) 0.0)
+   (connected loc_A loc_B) (connected loc_B loc_A)
+   (= (distance loc_A loc_B) 10.0) (= (distance loc_B loc_A) 10.0)
+   (= (traffic loc_A loc_B) 0.0) (= (traffic loc_B loc_A) 0.0)
 
    (connected loc_D loc_C) (connected loc_C loc_D)
    (= (distance loc_D loc_C) 10.0) (= (distance loc_C loc_D) 10.0)
