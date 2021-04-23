@@ -1,6 +1,5 @@
 (define
   (domain car_nonlinear_mt_sc)
-
   (:predicates
    (engine_running)
    (engine_stopped)
@@ -49,7 +48,7 @@
 
   (:action move
 	   :parameters ()
-	   :precondition (and (not (= (v) 0)) (not (= (a) 0.0) (engine_running))
+	   :precondition (and (not (= (v) 0)) (not (= (a) 0.0)) (engine_running))
 	   :effect (and (increase (d) (* (t) (v))) )
 
 	   )
