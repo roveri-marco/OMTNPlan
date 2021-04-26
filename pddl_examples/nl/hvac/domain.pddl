@@ -7,7 +7,7 @@
    (satisfied ?r - request)
    )
   (:functions
-   (air-flow ?l - room) ;; air-flow rate
+   (air_flow ?l - room) ;; air-flow rate
    (temp ?l - room) ;;temperature of the room. This variable is not controlled directly
    (temp_sa ?l - room) ;;supply air temperature. This variable is controlled directly
    (time) ;; this keeps track of the time. This is meant to allow us to capture the specific time-slot

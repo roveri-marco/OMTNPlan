@@ -1,7 +1,7 @@
 (define
-  (problem instance1)
+  (problem instance_1_1)
   (:domain hvac)
-  (:objects r1  -room k1  -request)
+  (:objects r1 - room k1 - request)
   (:init
    (= (time_requested r1 k1) 10)
    (= (temp_requested r1 k1) 20)
