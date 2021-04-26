@@ -1,8 +1,10 @@
 #!/bin/sh
 
-DIRS=`ls pddl_examples/nl | grep -v clearance`
+# DIRS=`ls pddl_examples/nl | grep -v clearance`
+DIRS="nl_counters/  hvac/  car_nl/ convoys_nl/"
 
-OMTP="echo /home/roveri/work/Planning/OMTNPlan/omtplan.py"
+
+OMTP="/home/roveri/work/Planning/OMTNPlan/omtplan.py"
 for i in ${DIRS}; do
   echo pddl_examples/nl/$i
   cd pddl_examples/nl/$i
