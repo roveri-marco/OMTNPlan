@@ -108,7 +108,7 @@ class SearchOMT(Search):
         """
 
         schedule = []
-        percentages = [10,15,25,35,50,75,100]
+        percentages = [10,15,20,25,35,50,75,100]
 
         def percentage(percent, whole):
             return (percent * whole) / 100
@@ -160,8 +160,8 @@ class SearchOMT(Search):
                 filename = self.prefix + "_" + str(horizon)  + ".smt2"
                 print('Dumping OMT file {}'.format(filename))
                 with open(filename, mode='w') as f:
-                    f.write("; benchmark generated from python API")
-                    f.write("(set-info :status unknown)")
+                    f.write("; benchmark generated from Z3 python API\n")
+                    f.write("(set-info :status unknown)\n")
                     sexpr = self.solver.sexpr()
                     f.write(sexpr)
                     f.write("(exit)")
