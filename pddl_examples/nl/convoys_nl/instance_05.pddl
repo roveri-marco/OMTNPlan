@@ -1,5 +1,5 @@
 (define
-  (problem sample_01)
+  (problem instance_05)
   (:domain convoys)
 
   (:objects

@@ -1,5 +1,5 @@
 (define
-  (problem chokepoint1)
+  (problem instance_01)
   (:domain convoys)
 
   (:objects
