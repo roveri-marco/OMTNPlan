@@ -28,6 +28,6 @@
  		(clear_d2_l3 ))
 	)
 
-	(:metric minimize (+ (* (factor) (cost_d2))  (* (factor) (cost_d1))))
+	(:metric minimize (+ (* 1 (cost_d2))  (* 1 (cost_d1))))
 
 )

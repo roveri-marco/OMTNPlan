@@ -133,16 +133,16 @@ def problemGenerator(nd, nl):
     ic = []
 
 
+    ic.append("\t\t(= (high) 3)")
+    ic.append("\t\t(= (low) 1)")
+    ic.append("\t\t(= (factor) 1)")
+    ic.append("\t\t(= (rate) 0.5)")
+
     for d in range(1,nd):
         for l in range(1,nl):
             ip.append("\t\t(not (clear_d{}_l{}) )".format(d,l))
-
         ic.append("\t\t(= (cost_d{}) 0)".format(d))
         ic.append("\t\t(= (priority_d{}) 1)".format(d))
-        ic.append("\t\t(= (high) 3)")
-        ic.append("\t\t(= (low) 1)")
-        ic.append("\t\t(= (factor) 1)")
-        ic.append("\t\t(= (rate) 0.5)")
 
     init = "\t(:init\n {}\n{}\n\t)\n\n".format("\n ".join(ip), "\n ".join(ic))
 
@@ -156,10 +156,10 @@ def problemGenerator(nd, nl):
     goal = "\t(:goal (and\n {})\n\t)\n\n".format("\n ".join(ip))
 
 
-    m  = ' (* (factor) (cost_d{}))'.format(1)
+    m  = ' (* 1 (cost_d{}))'.format(1)
     if nd > 2:
         for k in reversed(range(1,nd-1)):
-            m = '(+ (* (factor) (cost_d{})) {})'.format(k+1, m)
+            m = '(+ (* 1 (cost_d{})) {})'.format(k+1, m)
 
     metric = "\t(:metric minimize {})\n\n".format(m)
 

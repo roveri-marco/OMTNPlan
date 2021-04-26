@@ -72,6 +72,6 @@
  		(clear_d10_l2 ))
 	)
 
-	(:metric minimize (+ (* (factor) (cost_d2)) (+ (* (factor) (cost_d3)) (+ (* (factor) (cost_d4)) (+ (* (factor) (cost_d5)) (+ (* (factor) (cost_d6)) (+ (* (factor) (cost_d7)) (+ (* (factor) (cost_d8)) (+ (* (factor) (cost_d9)) (+ (* (factor) (cost_d10))  (* (factor) (cost_d1))))))))))))
+	(:metric minimize (+ (* 1 (cost_d2)) (+ (* 1 (cost_d3)) (+ (* 1 (cost_d4)) (+ (* 1 (cost_d5)) (+ (* 1 (cost_d6)) (+ (* 1 (cost_d7)) (+ (* 1 (cost_d8)) (+ (* 1 (cost_d9)) (+ (* 1 (cost_d10))  (* 1 (cost_d1))))))))))))
 
 )

@@ -48,6 +48,6 @@
  		(clear_d3_l5 ))
 	)
 
-	(:metric minimize (+ (* (factor) (cost_d2)) (+ (* (factor) (cost_d3))  (* (factor) (cost_d1)))))
+	(:metric minimize (+ (* 1 (cost_d2)) (+ (* 1 (cost_d3))  (* 1 (cost_d1)))))
 
 )
