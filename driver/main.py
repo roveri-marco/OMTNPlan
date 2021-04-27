@@ -50,6 +50,9 @@ def main(BASE_DIR):
 
     prefix = task.domain_name + "__" + task.task_name
 
+    if args.pb:
+        modifier.use_pbe = True
+
     # Fetch upper bound for bounded search
 
     ub = args.b

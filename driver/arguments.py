@@ -66,7 +66,7 @@ def parse_args():
 
     parser.add_argument('-b', type=int, default=bound, help='Upper bound for OMTPlan search.')
     parser.add_argument('-dump', action='store_true', help='Enables dump of the generated formulas')
-
+    parser.add_argument('-pb', action='store_true', help='Enales the use of Pseudo Boolean Constraints in the encoding')
 
     args = parser.parse_args()
 

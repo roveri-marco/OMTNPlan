@@ -18,6 +18,8 @@
 
 from z3 import *
 
+use_pbe = False
+
 class Modifier():
     """
     Modifier class.
@@ -47,8 +49,16 @@ class LinearModifier(Modifier):
         c = []
 
         for step in range(bound):
-            pbc = [(var,1) for var in variables[step].values()]
-            c.append(PbLe(pbc,1))
+            if not use_pbe:
+                # print("Not using PB")
+                pbc = 0;
+                for var in variables[step].values():
+                    pbc += If(var,1.0,0.0)
+                c.append(pbc <= 1.0)
+            else:
+                # print("Using PB")
+                pbc = [(var,1) for var in variables[step].values()]
+                c.append(PbLe(pbc,1))
 
         return c
 
