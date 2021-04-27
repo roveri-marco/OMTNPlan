@@ -794,7 +794,9 @@ class EncoderOMT(Encoder):
                     tvariables = []
 
                     for var_name in utils.extractVariablesFC(self,pre):
-                        tvariables.append(self.touched_variables[var_name])
+                        # MR: If not touched, then skip it
+                        if var_name in self.touched_variables:
+                            tvariables.append(self.touched_variables[var_name])
 
                     trac.append(Implies(self.auxiliary_actions[step][action.name],Or(expr,Or(tvariables))))
 

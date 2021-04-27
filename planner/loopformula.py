@@ -78,8 +78,10 @@ def buildDTables(encoder):
                 tmp = [expr]
 
                 for var_name in utils.extractVariablesFC(encoder,pre):
-                    tpre.append(encoder.touched_variables[var_name])
-                    tmp.append(encoder.touched_variables[var_name])
+                    # MR: If not touched, then skip it
+                    if var_name in encoder.touched_variables:
+                        tpre.append(encoder.touched_variables[var_name])
+                        tmp.append(encoder.touched_variables[var_name])
 
                 tpre_rel.append(tuple(tmp))
             else:
