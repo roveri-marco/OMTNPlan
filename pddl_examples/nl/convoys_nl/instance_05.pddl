@@ -34,4 +34,9 @@
             (position c2 loc_B)
         )
     )
-)
+
+  (:metric
+   maximize (- 48.0 (elapsed_time))
+   )
+
+  )

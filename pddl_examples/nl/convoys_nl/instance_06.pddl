@@ -35,4 +35,8 @@
         )
     )
 
+  (:metric
+   maximize (- 48.0 (elapsed_time))
+   )
+
 )
