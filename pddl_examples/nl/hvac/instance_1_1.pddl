@@ -5,7 +5,7 @@
   (:init
    (= (time_requested r1 k1) 10)
    (= (temp_requested r1 k1) 20)
-   (= (t) 0.5)
+   (= (t) 3.5)
 
 
    (= (temp r1) 15)
