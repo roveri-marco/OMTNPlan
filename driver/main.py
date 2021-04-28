@@ -52,6 +52,7 @@ def main(BASE_DIR):
 
     if args.pb:
         modifier.use_pbe = True
+        encoder.encode_pb = True
 
     # Fetch upper bound for bounded search
 

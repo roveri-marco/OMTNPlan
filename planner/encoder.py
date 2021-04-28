@@ -24,7 +24,7 @@ from translate import numeric_axiom_rules
 import numpy as np
 import loopformula
 
-
+encode_pb = False
 
 class Encoder():
     """
@@ -629,18 +629,30 @@ class EncoderOMT(Encoder):
         @return objective: objective function.
         """
 
+        constr = []
         if self.task.metric:
              objective = utils.buildMetricExpr(self)
 
         else:
-            objective = []
-            for step in range(self.horizon):
-                for action in self.action_variables[step].values():
-                    objective.append(If(action,1.0,0.0))
+            if encode_pb:
+                objective = []
+                for step in range(self.horizon):
+                    for action in self.action_variables[step].values():
+                        objective.append(If(action,1.0,0.0))
+                objective = sum(objective)
+            else:
+                var = []
+                for step in range(self.horizon):
+                    for action in self.action_variables[step].values():
+                        fvcost = Real('__fv_cost_{}_{}'.format(action,step))
+                        var.append(fvcost)
+                        constr.append(Implies(action, fvcost == 1.0))
+                        constr.append(Implies(Not(action), fvcost == 0.0))
+                        constr.append(fvcost >= 0)
+                        constr.append(fvcost <= 1)
+                objective = sum(var)
 
-            objective = sum(objective)
-
-        return objective
+        return objective, And(constr)
 
     def createAuxVariables(self):
         """
@@ -1014,15 +1026,31 @@ class EncoderOMT(Encoder):
         constraints = []
 
         for step in range(self.horizon,self.horizon+2):
-            cost = Real('add_cost_{}'.format(step))
-            total = []
-            for a,v in self.auxiliary_actions[step].items():
-                if self.task.metric:
-                    total.append(If(v,1.0*sum(self.final_costs[a]),0.0))
-                else:
-                    total.append(If(v,1.0,0.0))
-            constraints.append(cost == sum(total))
-            costs.append(cost)
+            if encode_pb:
+                cost = Real('add_cost_{}'.format(step))
+                total = []
+                for a,v in self.auxiliary_actions[step].items():
+                    val = 1.0
+                    if self.task.metric:
+                        val = 1.0*sum(self.final_costs[a])
+                    total.append(If(v,val,0.0))
+                constraints.append(cost == sum(total))
+                costs.append(cost)
+            else:
+                var = []
+                cost = Real('add_cost_{}'.format(step))
+                for a,v in self.auxiliary_actions[step].items():
+                    fv = Real('__fv_{}_cost_{}'.format(a,step))
+                    val = 1.0
+                    if self.task.metric:
+                        val = 1.0*sum(self.final_costs[a])
+                    var.append(fv)
+                    constraints.append(Implies(v, fv == val))
+                    constraints.append(Implies(Not(v), fv == 0.0))
+                    constraints.append(fv >= 0)
+                    constraints.append(fv <= val)
+                constraints.append(cost == sum(var))
+                costs.append(cost)
 
         constraints = And(constraints)
 
@@ -1151,7 +1179,9 @@ class EncoderOMT(Encoder):
 
         # Encode objective function
 
-        formula['objective'] = self.encodeObjective()
+        objective, constr = self.encodeObjective()
+        formula['objective'] = objective
+        formula['objective_constr'] = constr
 
         # Encode relaxed transition T^R
 
