@@ -125,7 +125,7 @@ def isNumFluent(fluent):
         return False
 
 
-def inorderTraversal(encoder,nax, numeric_variables):
+def inorderTraversal(encoder, nax, numeric_variables):
         """!
         Traverses the parsed domain as returned by TFD parser:
 
@@ -395,7 +395,6 @@ def parseMetric(encoder):
         else:
             if isinstance(metric,basestring):
                 return float(metric)
-
             else:
                 var_names.append('_'.join(metric))
                 return
@@ -417,7 +416,6 @@ def buildMetricExpr(encoder):
     @param encoder: encoder object.
     @return metricExpr: Z3 expression encoding metric.
     """
-
     metric = encoder.task.metric[1]
     fluents = encoder.numeric_variables[encoder.horizon]
 
@@ -428,6 +426,7 @@ def buildMetricExpr(encoder):
             l_expr = inorderTraversal(metric[1])
 
             r_expr = inorderTraversal(metric[2])
+
 
             if op == '+':
                 return l_expr + r_expr
@@ -442,10 +441,8 @@ def buildMetricExpr(encoder):
         else:
             if isinstance(metric,basestring):
                 return float(metric)
-
             else:
                 return fluents['_'.join(metric)]
-
 
     if len(metric) == 1:
         metricExpr =  fluents[metric[0]]
@@ -497,9 +494,6 @@ def printOMTFormula(formula,problem_name):
         # sexpr() behaves differently for class Optimize
         # and already prints what Solver prints when to_smt2
         # is called
-        
+
         with open('{}.smt2'.format(problem_name),'w') as fo:
             fo.write(solver.sexpr())
-            
-
-        

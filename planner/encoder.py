@@ -995,7 +995,10 @@ class EncoderOMT(Encoder):
                             tvariables = []
 
                             for var_name in utils.extractVariablesFC(self,part):
-                                tvariables.append(self.touched_variables[var_name])
+                                # MR: Added this condition similarly to other cases
+                                # MR: TO CHECK IF CORRECT
+                                if not var_name in self.var_objective:
+                                    tvariables.append(self.touched_variables[var_name])
 
                             numeric_subgoal.append(Or(expression, Or(tvariables)))
 
@@ -1178,25 +1181,20 @@ class EncoderOMT(Encoder):
         self.createAuxVariables()
 
         # Encode objective function
-
         objective, constr = self.encodeObjective()
         formula['objective'] = objective
         formula['objective_constr'] = constr
 
         # Encode relaxed transition T^R
-
         formula['tr'] = self.encodeRelaxedActions()
 
         # Encode transitive closure
-
         formula['tc'] = self.encodeTransitiveClosure()
 
         # Encode ASAP constraints
-
         formula['asap'] = self.encodeASAP()
 
         # Encode relaxed  goal state axioms
-
         goal = self.encodeGoalState()
 
         formula['real_goal'] = goal
@@ -1206,19 +1204,14 @@ class EncoderOMT(Encoder):
         formula['goal'] = Or(goal,abstract_goal)
 
         # Encode loop formula
-
         formula['lf'] = loopformula.encodeLoopFormulas(self)
 
         # Encode additional cost for relaxed actions
-
         add_objective, add_constraints = self.encodeAdditionalCosts()
-
         formula['objective'] = formula['objective'] + add_objective
-
         formula['additional_constraints'] = add_constraints
 
         # Perform relaxed actions only if previous steps are filled
-
         formula['oin'] = self.encodeOnlyIfNeeded()
 
         return formula
