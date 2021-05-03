@@ -33,4 +33,7 @@
   (:goal
    (and  (satisfied k1)(satisfied k2)(satisfied k3)(satisfied k4))
    )
+  (:metric
+   maximize (+ (- 48 (time)) (* (- (time) (temp r1)) (* (time) (temp r1))))
+   )
   )

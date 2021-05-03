@@ -60,4 +60,8 @@
 	 (satisfied k10)
 	 )
    )
+
+  (:metric
+   maximize (+ (- 48 (time)) (* (- (time) (temp r1)) (* (time) (temp r1))))
+   )
   )

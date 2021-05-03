@@ -36,6 +36,6 @@
  		(clear_d4_l2 ))
 	)
 
-	(:metric minimize (+ (* 1 (cost_d2)) (+ (* 1 (cost_d3)) (+ (* 1 (cost_d4))  (* 1 (cost_d1))))))
+	(:metric minimize (+ (* 2 (* (cost_d2) (cost_d2))) (+ (* 3 (* (cost_d3) (cost_d3))) (+ (* 4 (* (cost_d4) (cost_d4)))  (* 1 (* (cost_d1) (cost_d1)))))))
 
 )

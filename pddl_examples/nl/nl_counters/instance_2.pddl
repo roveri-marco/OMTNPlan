@@ -17,4 +17,7 @@
   (:goal (and
     (<= (+ (value c0) 1) (value c1))
   ))
+  (:metric
+   maximize (* (value c0) (value c1))
+   )
 )

@@ -24,4 +24,7 @@
     (engine_stopped)
     )
    )
+  (:metric
+   minimize (+ (d) (+ (* (v) (v)) (+ (* (* (a) (v)) (d)) (* (d) (* (v) (* (a) (* (d) 0.5)))))))
+  )
   )

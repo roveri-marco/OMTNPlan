@@ -156,10 +156,10 @@ def problemGenerator(nd, nl):
     goal = "\t(:goal (and\n {})\n\t)\n\n".format("\n ".join(ip))
 
 
-    m  = ' (* 1 (cost_d{}))'.format(1)
+    m  = ' (* 1 (* (cost_d{}) (cost_d{})))'.format(1,1)
     if nd > 2:
         for k in reversed(range(1,nd-1)):
-            m = '(+ (* 1 (cost_d{})) {})'.format(k+1, m)
+            m = '(+ (* {} (* (cost_d{}) (cost_d{}))) {})'.format(k+1,k+1,k+1, m)
 
     metric = "\t(:metric minimize {})\n\n".format(m)
 

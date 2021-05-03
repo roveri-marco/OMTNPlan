@@ -35,4 +35,14 @@
     (<= (+ (value c5) 1) (value c6))
     (<= (+ (value c6) 1) (value c7))
   ))
+  (:metric
+   maximize (+
+             (* (value c0) (value c1))
+             ( + (* (value c1) (value c2))
+             ( + (* (value c2) (value c3))
+             ( + (* (value c3) (value c4))
+             ( + (* (value c4) (value c5))
+             ( + (* (value c5) (value c6))
+             ( + (* (value c6) (value c7)))))))))
+   )
 )

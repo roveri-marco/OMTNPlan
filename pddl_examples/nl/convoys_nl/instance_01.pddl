@@ -60,7 +60,7 @@
    )
 
   (:metric
-   maximize (- 48.0 (elapsed_time))
+   maximize (- 48.0 (* (elapsed_time) (- (elapsed_time) 10)))
    )
 
   )

@@ -1,4 +1,3 @@
-
 (define (problem instance_2_300_01_100)
   (:domain car_nonlinear_mt_sc)
   (:objects
@@ -24,4 +23,7 @@
     (engine_stopped)
     )
    )
+  (:metric
+   minimize (+ (d) (+ (* (v) (v)) (+ (* (* (a) (v)) (d)) (* (d) (* (v) (* (a) (* (d) 0.5)))))))
+  )
   )
