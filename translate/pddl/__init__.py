@@ -37,6 +37,6 @@ from f_expression import FunctionAssignment
 from f_expression import Assign
 from f_expression import NumericConstant
 from f_expression import PrimitiveNumericExpression
+from f_expression import FunctionalExpression
 
 from effects import Effect
-
