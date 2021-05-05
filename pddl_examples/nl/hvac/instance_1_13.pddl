@@ -3,7 +3,7 @@
   (:domain hvac)
   (:objects r1 - room k1 k2 k3 k4 k5 k6 k7 k8 k9 k10 k11 k12 k13 - request)
   (:init
-   (= (t) 3.5)
+   (= (t) 0.5)
    (= (time_requested r1 k1) 10)
    (= (temp_requested r1 k1) 20)
 
