@@ -10,7 +10,7 @@ class ConditionProxy(object):
     clone = copy.copy(self)
     clone.owner = copy.copy(clone.owner)
     return clone
-    
+
 class PreconditionProxy(ConditionProxy):
   def __init__(self, action):
     self.owner = action
@@ -45,7 +45,7 @@ class PreconditionProxy(ConditionProxy):
                                      self.condition[1],fluent_preds))
         rule_body += list(condition_to_rule_body(action.parameters,
                                      self.condition[2], fluent_preds))
-    else: 
+    else:
         rule_body = list(condition_to_rule_body(action.parameters,
                                             self.condition))
     rules.append((rule_body, rule_head))
@@ -193,7 +193,7 @@ def remove_universal_quantifiers(task):
         condition = recurse(axiom_condition)
         axiom = task.add_axiom(typed_parameters, condition)
         new_axioms_by_condition[condition] = axiom
-      return pddl.NegatedAtom(axiom.name, [pddl.conditions.parse_term(par) for par in parameters]) 
+      return pddl.NegatedAtom(axiom.name, [pddl.conditions.parse_term(par) for par in parameters])
     else:
       new_parts = [recurse(part) for part in condition.parts]
       return condition.change_parts(new_parts)
@@ -218,11 +218,11 @@ def remove_universal_quantifiers(task):
       type_map = proxy.get_type_map()
       proxy.set(recurse(proxy.condition))
 
-    
+
 # [2] Pull disjunctions to the root of the condition.
 #
 # After removing universal quantifiers, the (k-ary generalization of the)
-# following rules suffice for doing that: 
+# following rules suffice for doing that:
 # (1) or(phi, or(psi, psi'))      ==  or(phi, psi, psi')
 # (2) exists(vars, or(phi, psi))  ==  or(exists(vars, phi), exists(vars, psi))
 # (3) and(phi, or(psi, psi'))     ==  or(and(phi, psi), and(phi, psi'))
@@ -366,7 +366,7 @@ def remove_object_functions_from_durations(task):
         for time in range(2):
             for index, (op, exp) in enumerate(act.duration[time]):
                 typed_vars, function_terms, new_term = \
-                    exp.compile_objectfunctions_aux(used_variables, 
+                    exp.compile_objectfunctions_aux(used_variables,
                         recurse_object_terms=False)
                 act.duration[time][index] = (op, new_term)
                 act.parameters += typed_vars
@@ -378,7 +378,7 @@ def remove_object_functions_from_durations(task):
                     new_condition = pddl.Atom("=", [variable, term])
                     new_conditions.append(new_condition)
                 act.condition[time] = pddl.Conjunction(new_conditions)
-                
+
 
 def remove_object_functions(task):
     def recurse(condition, used_variables):
@@ -417,7 +417,7 @@ def remove_object_functions(task):
         else:
             new_parts = [recurse(part,used_variables) for part in condition.parts]
             return condition.change_parts(new_parts)
-    
+
     remove_object_functions_from_durations(task)
 
     for proxy in tuple(all_conditions(task)):
@@ -467,7 +467,7 @@ def remove_duration_variable(task):
                 # remove from effect
                 if isinstance(eff.peffect,pddl.FunctionAssignment):
                     assign = eff.peffect
-                    assign.expression = assign.expression.remove_duration_variable(act, 
+                    assign.expression = assign.expression.remove_duration_variable(act,
                                                     time, duration, duration_functions)
         for pne in duration_functions:
             assign = pddl.Assign(pne,duration)
@@ -531,7 +531,7 @@ def substitute_complicated_goal(task):
       return
   new_axiom = task.add_axiom([],goal)
   task.goal = pddl.Atom(new_axiom.name, new_axiom.parameters)
-            
+
 # Combine Steps [1], [2], [3], [4]
 def normalize(task):
   remove_object_functions(task)
@@ -547,7 +547,7 @@ def normalize(task):
 def build_exploration_rules(task):
   result = []
   fluent_preds = get_fluent_predicates(task)
-  
+
   for proxy in all_conditions(task):
     proxy.build_rules(result, fluent_preds)
 
@@ -558,7 +558,7 @@ def build_exploration_rules(task):
     for part in axiom.parts:
         if isinstance(part,pddl.PrimitiveNumericExpression):
             rule_body.append(get_function_predicate(part))
-            
+
     result.append((rule_body, rule_head))
     rule_body = [rule_head]
     rule_head = get_function_predicate(axiom.get_head())
@@ -631,7 +631,7 @@ def get_fluent_predicates(task):
             fluent_predicates.add(predicate)
   for axiom in task.axioms:
     fluent_predicates.add(axiom.name)
-  return fluent_predicates 
+  return fluent_predicates
 
 def add_either_rules(type,rules):
   if isinstance(type,tuple):

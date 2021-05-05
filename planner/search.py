@@ -21,6 +21,7 @@ from planner import encoder
 import utils
 import numpy as np
 
+rewrite_objective = True
 
 class Search():
     """
@@ -148,7 +149,12 @@ class SearchOMT(Search):
                 if label == 'objective':
                     # objective function requires different handling
                     # as per Z3 API
-                    objective = self.solver.minimize(sub_formula)
+                    if rewrite_objective:
+                        fvcost = Real('__rev_fv_cost_{}'.format(horizon))
+                        self.solver.add(fvcost == sub_formula)
+                        self.solver.minimize(fvcost)
+                    else:
+                        objective = self.solver.minimize(sub_formula)
                 elif label ==  'real_goal':
                     # we don't want to assert goal formula at horizon
                     # see construction described in related paper

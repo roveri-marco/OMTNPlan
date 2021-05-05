@@ -974,7 +974,10 @@ class EncoderOMT(Encoder):
                     tvariables = []
 
                     for var_name in utils.extractVariablesFC(self,condition):
-                        tvariables.append(self.touched_variables[var_name])
+                        # MR: Added this condition similarly to other cases
+                        # MR: TO CHECK IF CORRECT
+                        if not var_name in self.var_objective:
+                            tvariables.append(self.touched_variables[var_name])
 
                     numeric_subgoal.append(Or(expression, Or(tvariables)))
 
