@@ -2,7 +2,6 @@
 
 OMTPlan provides a Python framework for cost-optimal planning in numeric domains.
 
-
 ## Obtaining OMTPlan
 
 Clone the OMTPlan repository in your favourite folder.
