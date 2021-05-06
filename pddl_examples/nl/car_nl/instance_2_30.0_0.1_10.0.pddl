@@ -5,9 +5,9 @@
    )
 
   (:init
-   (= (d) 0.0)
-   (= (v) 0.0)
-   (= (t) 0.5)
+   (= (d) 1.0)
+   (= (v) 1.0)
+   (= (t) 3.5)
    (engine_stopped)
    (= (a) 0.0)
    (= (max_acceleration) 2)
@@ -20,7 +20,7 @@
    (and
     (>= (d) 29.5 )
     (<= (d) 30.5 )
-    (engine_stopped)
+;    (engine_stopped)
     )
    )
   (:metric

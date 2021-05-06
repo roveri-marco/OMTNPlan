@@ -28,7 +28,10 @@
 
   (:action accelerate
 	   :parameters ()
-	   :precondition (and (< (a) (max_acceleration)) (engine_running) (>= (v) (* -1 (max_speed))) (<= (v) (max_speed)) )
+	   :precondition (and (< (a) (max_acceleration))
+			      (engine_running)
+			      (>= (v) (* -1 (max_speed)))
+			      (<= (v) (max_speed)) )
 	   :effect (and
 		    (increase (a) 0.5) ;;
 		    (increase (v) (- (* (+ (a) 0.5) (t)) (* (t) (* (* (v) (v)) (drag_coefficient)))))
