@@ -7,11 +7,10 @@
 
   (:init
     (= (max_int) 4)
-        (= (value c0) 0)
-        (= (value c1) 0)
-
-        (= (rate_value c0) 0)
-        (= (rate_value c1) 0)
+        (= (value c0) 1)
+        (= (value c1) 1)
+        (= (rate_value c0) 1)
+        (= (rate_value c1) 1)
   )
 
   (:goal (and

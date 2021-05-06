@@ -20,14 +20,14 @@
     ;; Increment the value in the given counter by a factor
     (:action increment
          :parameters (?c - counter)
-         :precondition (and (<= (+ (value ?c) (rate_value ?c)) (max_int)))
-         :effect (and (increase (value ?c) (* (value ?c) (* (rate_value ?c) (rate_value ?c)))))
+         :precondition (and (<= (+ (value ?c) (* (value ?c) (+ 1 (* (rate_value ?c) (rate_value ?c))))) (max_int)))
+         :effect (and (increase (value ?c) (* (value ?c) (+ 1 (* (rate_value ?c) (rate_value ?c))))))
     )
     ;; Decrement the value in the given counter by a factor
     (:action decrement
          :parameters (?c - counter)
-         :precondition (and (>= (- (value ?c) (rate_value ?c)) 0))
-         :effect (and (decrease (value ?c) (* (value ?c) (* (rate_value ?c) (rate_value ?c)))))
+         :precondition (and (>= (- (value ?c) (* (value ?c) (+ 1 (* (rate_value ?c) (rate_value ?c))))) 0))
+         :effect (and (decrease (value ?c) (* (value ?c) (+ 1 (* (rate_value ?c) (rate_value ?c))))))
     )
 
     (:action increase_rate
