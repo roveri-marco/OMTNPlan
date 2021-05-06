@@ -23,7 +23,7 @@
 	   :precondition (and
 			  (<= (temp ?l) (+ (temp_requested ?l ?r) (comfort)))
 			  ;(>= (temp ?l) (- (temp_requested ?l ?r) (comfort)))
-			  (= (time) (time_requested ?l ?r)))
+			  (>= (time) (time_requested ?l ?r)))
 	   :effect (and (satisfied ?r) (increase (time) (* (t) 0.5)))
 	   )
 
