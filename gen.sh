@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # DIRS=`ls pddl_examples/nl | grep -v clearance`
-DIRS="nl_counters/  hvac/  car_nl/ convoys_nl/"
+DIRS="nl_counters_simple/ nl_counters/  hvac/  car_nl/ convoys_nl/"
 
 
 OMTP="/home/roveri/work/Planning/OMTNPlan/omtplan.py"
